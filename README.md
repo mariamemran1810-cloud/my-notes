@@ -26,6 +26,8 @@ npm start
 | --- | --- |
 | `npm start` | تشغيل الخادم |
 | `npm run dev` | تشغيل مع إعادة التشغيل التلقائي عند تعديل الملفات |
+| `npm test` | تشغيل الاختبار الشامل (96 اختبارًا) |
+| `npm run build:pages` | بناء نسخة ثابتة لصفحة الهبوط (لـ GitHub Pages) |
 
 متطلب: Node.js ‏22.5 أو أحدث (لتوافر الوحدة المدمجة `node:sqlite`).
 
@@ -50,6 +52,11 @@ npm start
 ```
 my-notes/
 ├── server.js            # الخادم: الصفحات + الحماية + التشغيل
+├── render.yaml          # إعداد النشر على Render (Blueprint)
+├── .github/workflows/
+│   └── pages.yml        # سير نشر صفحة الهبوط على GitHub Pages
+├── scripts/
+│   └── pages-build.js   # بناء نسخة Pages الثابتة
 ├── src/
 │   ├── db.js            # مخطط قاعدة البيانات والعمليات (SQLite)
 │   ├── security.js      # تشفير كلمات المرور (Scrypt) + حد محاولات الدخول
@@ -63,8 +70,48 @@ my-notes/
 │   ├── css/  (base, landing, auth, app)
 │   ├── js/   (ui, api, landing, auth, app)
 │   └── favicon.svg
+├── test/smoke.js        # 96 اختبارًا آليًا (الخصوصية، CSRF، السلة…)
 └── data/                # ملف قاعدة البيانات (غير مُرفع إلى Git)
 ```
+
+---
+
+## النشر
+
+> **لماذا موقعان؟** GitHub Pages يستضيف ملفات ثابتة فقط ولا يستطيع تشغيل
+> خادم Node.js أو قاعدة بيانات. لذلك نشرنا **التطبيق كاملًا** على Render
+> (خادم + قاعدة بيانات)، و**صفحة الهبوط التعريفية** على GitHub Pages مع
+> أزرار توجّه إلى التطبيق الحيّ.
+
+### 1) نشر التطبيق على Render (الخطوة الأساسية)
+
+1. افتح <https://dashboard.render.com> وسجّل الدخول بحساب GitHub.
+2. اضغط **New + → Blueprint** واختر مستودع `my-notes`.
+3. سيقرأ Render ملف `render.yaml` تلقائيًا ويبني الخادم. اضغط **Apply**.
+4. بعد اكتمال النشر ستحصل على رابط مثل `https://my-notes-xxxx.onrender.com` —
+   هذا هو **التطبيق الكامل**: التسجيل، الدخول، وقاعدة بيانات المستخدمين.
+
+**حفظ البيانات دائمًا (مهم):** الخطة المجانية لا تدعم الأقراص الدائمة، لذا
+تُعاد قاعدة البيانات عند كل إعادة نشر. لتفعيل التخزين الدائم:
+`Settings → Disk → Add Disk` ثم غيّر `DB_PATH` في متغيّرات البيئة إلى
+`/var/data/mynotes.db` (يتطابق مع `mountPath` في `render.yaml`).
+
+### 2) نشر صفحة الهبوط على GitHub Pages
+
+1. على صفحة المستودع: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. سيقوم سير `.github/workflows/pages.yml` بالبناء والنشر تلقائيًا مع كل دفع.
+3. للربط الصحيح، أضف متغيّر بيئة في المستودع
+   (**Settings → Secrets and variables → Actions → Variables**):
+   `APP_URL` = رابطك على Render (مثال `https://my-notes-xxxx.onrender.com`).
+   أزرار «تسجيل الدخول» و«إنشاء حساب» في صفحة الهبوط ستوجّه إليه.
+
+لنشر الصفحة يدويًا محليًا:
+
+```bash
+APP_URL=https://your-app.onrender.com npm run build:pages
+# النتيجة في dist-pages/ — ارفعها لأي استضافة ثابتة
+```
+
 
 ---
 

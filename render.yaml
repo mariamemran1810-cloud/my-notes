@@ -1,0 +1,42 @@
+# إعداد النشر على Render (Blueprint)
+# ----------
+# كيفية الاستخدام:
+#   1) ارفع المستودع إلى GitHub (تم)
+#   2) على https://dashboard.render.com اختر New → Blueprint واختر المستودع my-notes
+#   3) سيقرأ Render هذا الملف ويبني الخادم تلقائيًا
+#
+# ملاحظة مهمة عن خطة Render المجانية (Free):
+#   الخطة المجانية لا تدعم الأقراص الدائمة (Disks)، لذا يُعاد ضبط قاعدة البيانات
+#   عند كل إعادة نشر أو إعادة تشغيل. إن أردت حفظ البيانات دائمًا، أضف قسم `disk`
+#   المعلّق بالأسفل (يتطلب خطة Starter المدفوعة) — كل ما في الأمر سطر واحد.
+services:
+  - type: web
+    name: my-notes
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/auth/me
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: SITE_NAME
+        value: ملاحظاتي
+      - key: SESSION_DAYS
+        value: "30"
+      # على Render المجاني يكون نظام الملفات مؤقتًا. عند تفعيل القرص أدناه
+      # غيّر المسار إلى /var/data/mynotes.db
+      - key: DB_PATH
+        value: ./data/mynotes.db
+
+# --- لحفظ بيانات المستخدمين بشكل دائم (يتطلب خطة Starter أو أعلى) ---
+# أزل علامات التعليق عن القسم التالي ثم عدّل DB_PATH أعلاه إلى /var/data/mynotes.db
+#
+#    disk:
+#      name: mynotes-data
+#      mountPath: /var/data
+#      sizeGB: 1

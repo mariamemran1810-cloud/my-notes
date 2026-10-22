@@ -1,0 +1,59 @@
+name: نشر صفحة GitHub Pages
+
+# يبني النسخة الثابتة من صفحة الهبوط (scripts/pages-build.js)
+# وينشرها على GitHub Pages.
+#
+# لتفعيله مرة واحدة:
+#   Settings → Pages → Source: GitHub Actions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/**"
+      - "scripts/pages-build.js"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: جلب الكود
+        uses: actions/checkout@v4
+
+      - name: تجهيز Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: بناء نسخة Pages
+        env:
+          # غيّر هذا الرابط بعد نشر التطبيق على Render (من حسابك)
+          APP_URL: ${{ vars.APP_URL || 'https://my-notes.onrender.com' }}
+        run: node scripts/pages-build.js
+
+      - name: رفع نتائج البناء
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: النشر على Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
