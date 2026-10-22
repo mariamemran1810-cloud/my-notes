@@ -1,0 +1,405 @@
+/* ==========================================================================
+   ملاحظاتي — صفحات الدخول والتسجيل
+   ========================================================================== */
+
+.auth-body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.auth-shell {
+  display: grid;
+  grid-template-columns: 1fr 1.12fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ------------------------------- لوح العلامة ------------------------------ */
+.auth-aside {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(150deg, #1e1b4b 0%, #312e81 38%, #4338ca 78%, #6d28d9 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.auth-aside-glow {
+  position: absolute;
+  inset: -20% -30% auto;
+  height: 520px;
+  background:
+    radial-gradient(420px 260px at 30% 30%, rgba(236, 72, 153, .32), transparent 65%),
+    radial-gradient(460px 300px at 78% 68%, rgba(56, 189, 248, .3), transparent 65%);
+  pointer-events: none;
+}
+
+.auth-aside-inner {
+  position: relative;
+  padding: clamp(34px, 5vw, 68px);
+  max-width: 520px;
+}
+
+.brand-on-dark {
+  color: #fff;
+}
+
+.brand-on-dark .brand-mark {
+  background: rgba(255, 255, 255, .16);
+  box-shadow: none;
+}
+
+.aside-title {
+  margin-top: clamp(30px, 6vh, 56px);
+  font-size: clamp(27px, 3.2vw, 40px);
+  line-height: 1.22;
+  letter-spacing: -.03em;
+}
+
+.aside-text {
+  margin-top: 16px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, .82);
+  line-height: 1.7;
+}
+
+.aside-points {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-top: 32px;
+}
+
+.aside-points li {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .94);
+}
+
+.aside-points .check {
+  background: rgba(255, 255, 255, .18);
+  color: #fff;
+}
+
+.aside-quote {
+  margin-top: clamp(30px, 6vh, 54px);
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--radius-lg);
+  font-size: 14.8px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, .9);
+}
+
+.aside-stats {
+  display: flex;
+  gap: 14px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+
+.aside-stats div {
+  flex: 1;
+  min-width: 110px;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+}
+
+.aside-stats strong {
+  display: block;
+  font-size: 20px;
+  letter-spacing: -.02em;
+}
+
+.aside-stats span {
+  font-size: 12.6px;
+  color: rgba(255, 255, 255, .76);
+}
+
+/* -------------------------------- النموذج -------------------------------- */
+.auth-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 84px 24px 40px;
+  background:
+    radial-gradient(700px 340px at 82% 6%, rgba(99, 102, 241, .1), transparent 62%),
+    var(--bg);
+}
+
+.auth-top {
+  position: absolute;
+  top: 18px;
+  inset-inline: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  transition: background var(--fast), color var(--fast);
+}
+
+.back-link:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.i-sun { display: none; }
+html[data-theme="dark"] .i-sun { display: block; }
+html[data-theme="dark"] .i-moon { display: none; }
+
+.auth-card {
+  width: min(448px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: clamp(26px, 4vw, 38px);
+  animation: auth-in .45s var(--ease) both;
+}
+
+@keyframes auth-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.auth-head {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.auth-ico {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 15px;
+  border-radius: 17px;
+  background: linear-gradient(140deg, var(--brand-500), var(--brand-700));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, .32);
+}
+
+.auth-head h1 {
+  font-size: 24px;
+  letter-spacing: -.025em;
+}
+
+.auth-head p {
+  margin-top: 7px;
+  color: var(--text-muted);
+  font-size: 14.6px;
+}
+
+#loginForm,
+#registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pw-wrap {
+  position: relative;
+}
+
+.pw-wrap .input {
+  padding-inline-end: 46px;
+}
+
+.pw-toggle {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 8px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--text-faint);
+  transition: color var(--fast), background var(--fast);
+}
+
+.pw-toggle:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.pw-toggle .i-eye-off { display: none; }
+.pw-toggle.showing .i-eye { display: none; }
+.pw-toggle.showing .i-eye-off { display: block; }
+
+/* مؤشر قوة كلمة المرور */
+.strength {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.strength span {
+  height: 5px;
+  border-radius: 99px;
+  background: var(--border-strong);
+  transition: background var(--med);
+}
+
+.strength[data-score="1"] span:nth-child(1) { background: var(--danger); }
+.strength[data-score="2"] span:nth-child(-n+2) { background: var(--warning); }
+.strength[data-score="3"] span:nth-child(-n+3) { background: var(--brand-500); }
+.strength[data-score="4"] span { background: var(--success); }
+
+.strength-label {
+  font-weight: 500;
+}
+
+/* خيار «تذكرني» */
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.remember-box {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: transparent;
+  transition: all var(--fast);
+  flex: none;
+}
+
+.remember input:checked + .remember-box {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: #fff;
+}
+
+.remember input:focus-visible + .remember-box {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+/* تنبيه النموذج */
+.form-alert {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 34%, transparent);
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 600;
+  animation: auth-in .25s var(--ease);
+}
+
+.form-alert[hidden] { display: none; }
+
+.form-alert.success {
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+  border-color: color-mix(in srgb, var(--success) 34%, transparent);
+  color: var(--success);
+}
+
+.btn-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn.loading .btn-label { opacity: .75; }
+.btn.loading .spinner { display: block !important; }
+
+.auth-switch {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14.5px;
+  color: var(--text-muted);
+}
+
+.auth-switch a {
+  color: var(--brand-600);
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .auth-switch a { color: var(--brand-300); }
+
+.auth-switch a:hover { text-decoration: underline; }
+
+.auth-legal {
+  font-size: 12.8px;
+  color: var(--text-faint);
+  text-align: center;
+  max-width: 420px;
+}
+
+/* ------------------------------ الاستجابة --------------------------------- */
+@media (max-width: 940px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-aside {
+    display: none;
+  }
+
+  .auth-main {
+    justify-content: flex-start;
+    padding-top: 76px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .auth-main {
+    padding-inline: 14px;
+  }
+
+  .auth-top {
+    inset-inline: 10px;
+    top: 12px;
+  }
+}
