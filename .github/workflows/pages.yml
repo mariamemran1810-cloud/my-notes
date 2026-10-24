@@ -1,6 +1,6 @@
-name: نشر صفحة GitHub Pages
+name: نشر نسخة GitHub Pages
 
-# يبني النسخة الثابتة من صفحة الهبوط (scripts/pages-build.js)
+# يبني النسخة الكاملة (هبوط + دخول + لوحة) حيث GitHub هو قاعدة البيانات
 # وينشرها على GitHub Pages.
 #
 # لتفعيله مرة واحدة:
@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - "public/**"
+      - "pages-app/**"
       - "scripts/pages-build.js"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -37,10 +38,10 @@ jobs:
           node-version: 24
 
       - name: بناء نسخة Pages
-        env:
-          # غيّر هذا الرابط بعد نشر التطبيق على Render (من حسابك)
-          APP_URL: ${{ vars.APP_URL || 'https://my-notes.onrender.com' }}
         run: node scripts/pages-build.js
+
+      - name: التحقق من المخرجات
+        run: node scripts/verify-dist.js
 
       - name: رفع نتائج البناء
         uses: actions/upload-pages-artifact@v3
